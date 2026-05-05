@@ -7,6 +7,7 @@ import { generalLimiter, authLimiter } from './middleware/rateLimit';
 import { errorHandler } from './middleware/errorHandler';
 import healthRouter from './routes/health';
 import authRouter from './routes/auth';
+import animeRouter from './routes/anime';
 
 const app = express();
 const PORT = parseInt(process.env.PORT ?? '4000', 10);
@@ -18,6 +19,7 @@ app.use(generalLimiter);
 
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authLimiter, authRouter);
+app.use('/api/anime', animeRouter);
 
 const frontendDist = path.join(__dirname, '..', '..', 'frontend', 'dist');
 app.use(express.static(frontendDist));
