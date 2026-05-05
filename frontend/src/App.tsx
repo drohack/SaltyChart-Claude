@@ -1,10 +1,28 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { SettingsProvider } from './contexts/SettingsContext';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Randomize from './pages/Randomize';
+import Compare from './pages/Compare';
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-2">SaltyChart</h1>
-        <p className="text-gray-400">Loading...</p>
-      </div>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <SettingsProvider>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/randomize" element={<Randomize />} />
+              <Route path="/compare" element={<Compare />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </SettingsProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }

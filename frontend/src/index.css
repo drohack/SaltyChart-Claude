@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* High-contrast theme */
+.hc {
+  --tw-bg-opacity: 1;
+}
+
+.hc body,
+.hc [class*="bg-white"],
+.hc [class*="bg-gray"] {
+  background-color: black !important;
+  color: white !important;
+}
+
+.hc [class*="border-gray"] {
+  border-color: white !important;
+}
+
+.hc [class*="text-gray"],
+.hc [class*="text-indigo"] {
+  color: white !important;
+}
+
+.hc a { color: yellow !important; }
+.hc button:focus { outline: 3px solid yellow !important; }
+.hc input, .hc select {
+  background-color: black !important;
+  color: white !important;
+  border-color: white !important;
+}
+
+/* Smooth transitions on theme switch */
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
