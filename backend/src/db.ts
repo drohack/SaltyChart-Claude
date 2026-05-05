@@ -12,6 +12,10 @@ export function getDb(): Database.Database {
 }
 
 export function initDb(dbPath: string = ':memory:'): Database.Database {
+  if (dbPath !== ':memory:') {
+    const dir = path.dirname(dbPath);
+    if (dir) fs.mkdirSync(dir, { recursive: true });
+  }
   db = new Database(dbPath);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');

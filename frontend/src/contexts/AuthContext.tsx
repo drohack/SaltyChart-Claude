@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { setToken } from '../api/client';
+import { setToken, setUnauthorizedHandler } from '../api/client';
 import * as authApi from '../api/auth';
 
 interface AuthUser {
@@ -27,6 +27,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setToken(token);
   }, [token]);
+
+  // Auto-logout when an expired/invalid token gets a 401 from any API call
+  useEffect(() => {
+    setUnauthorizedHandler(logout);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function persist(t: string, u: AuthUser) {
     localStorage.setItem('sc_token', t);

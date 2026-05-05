@@ -27,6 +27,11 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/watchlist', watchlistRouter);
 app.use('/api/users', usersRouter);
 
+// 404 for any unmatched /api/* route — prevents falling through to the SPA
+app.use('/api', (_req, res) => {
+  res.status(404).json({ error: 'Not found', code: 'BAD_REQUEST' });
+});
+
 const frontendDist = path.join(__dirname, '..', '..', 'frontend', 'dist');
 app.use(express.static(frontendDist));
 app.get('*', (_req, res) => {

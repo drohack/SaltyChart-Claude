@@ -21,8 +21,9 @@ function loadLocalSettings(): UserSettings {
 
 function applyTheme(theme: UserSettings['theme']): void {
   const root = document.documentElement;
-  const isDark =
-    theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // high-contrast builds on dark as its base (black bg + white text)
+  const isDark = theme === 'dark' || theme === 'high-contrast' || (theme === 'system' && systemDark);
   root.classList.toggle('dark', isDark);
   root.classList.toggle('hc', theme === 'high-contrast');
 }

@@ -2,42 +2,74 @@
 @tailwind components;
 @tailwind utilities;
 
-/* High-contrast theme */
+/* ── High-contrast theme ───────────────────────────────────────────────────
+   Builds on the dark theme (dark class is also applied). Overrides mid-grays
+   to pure black/white and accent colours to high-visibility yellow. */
 .hc {
-  --tw-bg-opacity: 1;
+  background-color: #000 !important;
+  color: #fff !important;
 }
 
-.hc body,
+/* Backgrounds: collapse all grays to black */
 .hc [class*="bg-white"],
-.hc [class*="bg-gray"] {
-  background-color: black !important;
-  color: white !important;
+.hc [class*="bg-gray-"] {
+  background-color: #000 !important;
 }
 
-.hc [class*="border-gray"] {
-  border-color: white !important;
+/* Text: elevate all mid-gray text to white */
+.hc [class*="text-gray-"] {
+  color: #fff !important;
 }
 
-.hc [class*="text-gray"],
-.hc [class*="text-indigo"] {
-  color: white !important;
+/* Accent colours → bright yellow for legibility */
+.hc [class*="text-indigo-"],
+.hc [class*="text-purple-"],
+.hc [class*="text-amber-"],
+.hc [class*="text-orange-"],
+.hc [class*="text-red-"],
+.hc [class*="text-green-"],
+.hc [class*="text-teal-"] {
+  color: #ffd700 !important;
 }
 
-.hc a { color: yellow !important; }
-.hc button:focus { outline: 3px solid yellow !important; }
-.hc input, .hc select {
-  background-color: black !important;
-  color: white !important;
-  border-color: white !important;
+/* Borders → white */
+.hc [class*="border-gray-"],
+.hc [class*="border-indigo-"],
+.hc [class*="border-purple-"] {
+  border-color: #fff !important;
 }
 
-/* Smooth transitions on theme switch */
+/* Active/selected state → yellow bg + black text */
+.hc [class*="bg-indigo-"],
+.hc [class*="bg-purple-"] {
+  background-color: #ffd700 !important;
+  color: #000 !important;
+}
+
+/* Links */
+.hc a { color: #ffd700 !important; }
+
+/* Focus rings */
+.hc *:focus {
+  outline: 3px solid #ffd700 !important;
+  outline-offset: 2px;
+}
+
+/* Form inputs */
+.hc input, .hc select, .hc textarea {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
 html {
   color-scheme: light;
-  /* Prevent horizontal overflow from creating a scroll container that
-     would break position:sticky on child elements (spec §5.3 note). */
+  /* Prevents horizontal overflow from creating a scroll container that
+     breaks position:sticky on child elements (per spec §5.3 note). */
   overflow-x: clip;
 }
+
 html.dark {
   color-scheme: dark;
 }
