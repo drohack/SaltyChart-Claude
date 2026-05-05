@@ -34,6 +34,9 @@
 /* Smooth transitions on theme switch */
 html {
   color-scheme: light;
+  /* Prevent horizontal overflow from creating a scroll container that
+     would break position:sticky on child elements (spec §5.3 note). */
+  overflow-x: clip;
 }
 html.dark {
   color-scheme: dark;
