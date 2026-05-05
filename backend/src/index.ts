@@ -8,6 +8,9 @@ import { errorHandler } from './middleware/errorHandler';
 import healthRouter from './routes/health';
 import authRouter from './routes/auth';
 import animeRouter from './routes/anime';
+import settingsRouter from './routes/settings';
+import watchlistRouter from './routes/watchlist';
+import usersRouter from './routes/users';
 
 const app = express();
 const PORT = parseInt(process.env.PORT ?? '4000', 10);
@@ -20,6 +23,9 @@ app.use(generalLimiter);
 app.use('/api/health', healthRouter);
 app.use('/api/auth', authLimiter, authRouter);
 app.use('/api/anime', animeRouter);
+app.use('/api/settings', settingsRouter);
+app.use('/api/watchlist', watchlistRouter);
+app.use('/api/users', usersRouter);
 
 const frontendDist = path.join(__dirname, '..', '..', 'frontend', 'dist');
 app.use(express.static(frontendDist));
