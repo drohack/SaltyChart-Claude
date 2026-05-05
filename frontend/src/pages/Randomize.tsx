@@ -12,7 +12,7 @@ import { Season, AnimeMedia, WatchlistEntry, User } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 import { useSettings } from '../contexts/SettingsContext';
 import { getSeasonAnime } from '../api/anime';
-import { getMyWatchlist, toggleHidden, updateRank } from '../api/watchlist';
+import { getMyWatchlist, toggleHidden, updateRank, toggleWatched } from '../api/watchlist';
 import { getUsersWithSeason } from '../api/users';
 import { getTitle } from '../lib/title';
 import { loadLastSeason, saveLastSeason, seasonLabel, yearRange } from '../lib/season';
@@ -122,6 +122,13 @@ export default function Randomize() {
       .sort((a, b) => (a.postWatchRank ?? 999) - (b.postWatchRank ?? 999)),
     [watchlist],
   );
+
+  async function handleToggleWatched(animeId: number) {
+    const res = await toggleWatched(animeId, season, year);
+    setWatchlist((prev) =>
+      prev.map((e) => e.animeId === animeId ? { ...e, watched: res.watched, watchedAt: res.watched ? new Date().toISOString() : null } : e),
+    );
+  }
 
   async function handleToggleHidden(animeId: number, season: Season, year: number) {
     const res = await toggleHidden(animeId, season, year);
@@ -290,6 +297,7 @@ export default function Randomize() {
           myEntry={watchlist.find((e) => e.animeId === popup.id)}
           visibleUserIds={enabledUserIds}
           onClose={() => setPopup(null)}
+          onToggleWatched={() => handleToggleWatched(popup.id)}
         />
       )}
     </div>

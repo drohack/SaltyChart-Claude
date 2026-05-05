@@ -17,9 +17,10 @@ interface Props {
   myEntry: WatchlistEntry | undefined;
   visibleUserIds: Set<number>;
   onClose: () => void;
+  onToggleWatched?: () => void;
 }
 
-export default function ShowPopup({ anime, myEntry, visibleUserIds, onClose }: Props) {
+export default function ShowPopup({ anime, myEntry, visibleUserIds, onClose, onToggleWatched }: Props) {
   const { settings } = useSettings();
   const title = getTitle(anime.title, settings.titleLanguage);
   const [nicknames, setNicknames] = useState<NicknameRow[]>([]);
@@ -68,13 +69,26 @@ export default function ShowPopup({ anime, myEntry, visibleUserIds, onClose }: P
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1.5">My entry</p>
             {myEntry ? (
-              <div className="text-sm text-gray-700 dark:text-gray-300 space-y-0.5">
-                <p>Nickname: <span className="font-medium">{myEntry.nickname ?? '—'}</span></p>
-                <p>Pre-watch order: <span className="font-medium">#{myEntry.preWatchOrder + 1}</span></p>
-                {myEntry.postWatchRank !== null && (
-                  <p>Post-watch rank: <span className="font-medium">#{myEntry.postWatchRank + 1}</span></p>
+              <div className="space-y-1.5">
+                <div className="text-sm text-gray-700 dark:text-gray-300 space-y-0.5">
+                  <p>Nickname: <span className="font-medium">{myEntry.nickname ?? '—'}</span></p>
+                  <p>Pre-watch order: <span className="font-medium">#{myEntry.preWatchOrder + 1}</span></p>
+                  {myEntry.postWatchRank !== null && (
+                    <p>Post-watch rank: <span className="font-medium">#{myEntry.postWatchRank + 1}</span></p>
+                  )}
+                </div>
+                {onToggleWatched && (
+                  <button
+                    onClick={onToggleWatched}
+                    className={`w-full py-1.5 px-3 rounded-lg text-sm font-medium transition-colors ${
+                      myEntry.watched
+                        ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 hover:bg-green-200'
+                        : 'border border-green-500 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950'
+                    }`}
+                  >
+                    {myEntry.watched ? '✓ Watched — click to unmark' : 'Mark as watched'}
+                  </button>
                 )}
-                <p>Status: <span className="font-medium">{myEntry.watched ? '✓ Watched' : '◯ Unwatched'}</span></p>
               </div>
             ) : (
               <p className="text-sm text-gray-400">Not in your watchlist</p>

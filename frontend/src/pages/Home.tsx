@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Season, AnimeMedia, WatchlistEntry } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 import { getSeasonAnime } from '../api/anime';
-import { getMyWatchlist, addToWatchlist, removeFromWatchlist } from '../api/watchlist';
+import { getMyWatchlist, addToWatchlist, removeFromWatchlist, toggleWatched } from '../api/watchlist';
 import {
   loadLastSeason, saveLastSeason, currentSeason,
   daysUntilNextSeason, nextSeasonName, seasonLabel,
@@ -82,6 +82,13 @@ export default function Home() {
     setWatchlist((prev) => prev.filter((e) => e.animeId !== animeId));
   }
 
+  async function handleToggleWatched(animeId: number) {
+    const res = await toggleWatched(animeId, season, year);
+    setWatchlist((prev) =>
+      prev.map((e) => e.animeId === animeId ? { ...e, watched: res.watched, watchedAt: res.watched ? new Date().toISOString() : null } : e),
+    );
+  }
+
   // Days until next season
   const days = daysUntilNextSeason();
   const { season: nextSeason, year: nextYear } = nextSeasonName();
@@ -157,13 +164,9 @@ export default function Home() {
           anime={selected}
           entry={selectedEntry}
           onClose={() => setSelected(null)}
-          onAddToWatchlist={async () => {
-            await handleAdd(selected.id);
-          }}
-          onRemoveFromWatchlist={async () => {
-            await handleRemove(selected.id);
-            setSelected(null);
-          }}
+          onAddToWatchlist={async () => { await handleAdd(selected.id); }}
+          onRemoveFromWatchlist={async () => { await handleRemove(selected.id); setSelected(null); }}
+          onToggleWatched={async () => { await handleToggleWatched(selected.id); }}
         />
       )}
     </div>

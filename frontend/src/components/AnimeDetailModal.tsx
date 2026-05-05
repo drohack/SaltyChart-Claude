@@ -10,10 +10,11 @@ interface Props {
   onClose: () => void;
   onAddToWatchlist: () => void;
   onRemoveFromWatchlist: () => void;
+  onToggleWatched: () => void;
 }
 
 export default function AnimeDetailModal({
-  anime, entry, onClose, onAddToWatchlist, onRemoveFromWatchlist,
+  anime, entry, onClose, onAddToWatchlist, onRemoveFromWatchlist, onToggleWatched,
 }: Props) {
   const { user } = useAuth();
   const { settings } = useSettings();
@@ -32,7 +33,6 @@ export default function AnimeDetailModal({
 
   const inWatchlist = !!entry;
 
-  // Strip HTML tags from description
   const description = anime.description
     ? anime.description.replace(/<[^>]+>/g, '').replace(/\n/g, ' ').trim()
     : null;
@@ -105,16 +105,28 @@ export default function AnimeDetailModal({
             </p>
           )}
 
-          {/* Watchlist action */}
+          {/* Watchlist actions */}
           {user && (
-            <div className="pt-2">
+            <div className="pt-2 space-y-2">
               {inWatchlist ? (
-                <button
-                  onClick={onRemoveFromWatchlist}
-                  className="w-full py-2 px-4 rounded-lg border-2 border-red-500 text-red-600 dark:text-red-400 font-medium hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
-                >
-                  Remove from watchlist
-                </button>
+                <>
+                  <button
+                    onClick={onToggleWatched}
+                    className={`w-full py-2 px-4 rounded-lg font-medium transition-colors ${
+                      entry.watched
+                        ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/70'
+                        : 'border-2 border-green-500 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950'
+                    }`}
+                  >
+                    {entry.watched ? '✓ Watched — click to unmark' : 'Mark as watched'}
+                  </button>
+                  <button
+                    onClick={onRemoveFromWatchlist}
+                    className="w-full py-2 px-4 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm"
+                  >
+                    Remove from watchlist
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={onAddToWatchlist}
