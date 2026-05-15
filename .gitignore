@@ -3,3 +3,12 @@ dist/
 data/
 .env
 *.db
+*.db-shm
+*.db-wal
+
+# Claude Code
+.claude/settings.local.json
+.claude/projects/
+.claude/backups/
+.claude/file-history/
+.claude/plugins/
