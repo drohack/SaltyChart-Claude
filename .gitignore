@@ -12,3 +12,4 @@ data/
 .claude/backups/
 .claude/file-history/
 .claude/plugins/
+.claude/

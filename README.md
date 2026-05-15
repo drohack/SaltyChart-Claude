@@ -1,6 +1,10 @@
-# SaltyChart
+# SaltyChart — built with Claude Code (claude-sonnet-4-6)
 
 A personal seasonal anime tracker. Browse AniList seasonal data, maintain a watchlist, rank shows pre/post-watch, compare rankings with friends, and spin a randomizer wheel to pick what to watch next.
+
+> **Reference implementation** — built using Claude Code with the real Anthropic API (claude-sonnet-4-6, Max subscription). Completed M1–M9, all milestones verified. Used as the quality baseline for comparing local LLM implementations:
+> - `SaltyChart-llama-qwen35b-a3b` — rebuilt using local Qwen3.6-35B-A3B via llama.cpp + clawgate
+> - `SaltyChart-NVIDIA-NIM` — rebuilt using NVIDIA NIM free-tier inference via clawgate
 
 ## Running the app
 
